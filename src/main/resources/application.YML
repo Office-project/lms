@@ -1,0 +1,10 @@
+spring:
+  datasource:
+    driverClassName: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/db_new_lms
+    username: root
+    password: tobi
+  jpa:
+    hibernate.ddl-auto: update
+    generate-ddl: true
+    show-sql: true
