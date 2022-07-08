@@ -172,6 +172,7 @@ public class EmployeeServiceImpl implements EmployeeService {
                 .location(getLocation(employee.getLocation()))
                 .joinDate(employee.getJoinDate())
                 .lastName(employee.getLastName())
+                .role(employee.getRole().name())
                 .build();
     }
 
