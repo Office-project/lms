@@ -74,7 +74,7 @@ public class LoginServiceImpl implements LoginService {
                 .role(employee.getRole().toString())
                 .department(employee.getDepartment().getDepartmentName())
                 .initail(initial)
-                .location(employee.getLocation().getState()+" "+employee.getLocation().getOffice())
+                .location(employee.getLocation().getState())
                 .joinDate(employee.getJoinDate())
                 .supervisor(getSupervisor(employee))
                 .build();

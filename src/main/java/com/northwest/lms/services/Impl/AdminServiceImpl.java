@@ -74,4 +74,9 @@ public class AdminServiceImpl implements DepartmentService {
     public ResponseEntity<List<LeaveType>> fetchAllLeaveTypes() {
         return ResponseEntity.ok(leaveTypeRepository.findAll());
     }
+
+    @Override
+    public ResponseEntity<List<Department>> getAll() {
+        return ResponseEntity.ok(departmentRepo.findAll());
+    }
 }

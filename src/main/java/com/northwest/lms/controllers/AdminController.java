@@ -33,6 +33,11 @@ public class AdminController {
         return departmentService.createDepartment(deptDto);
     }
 
+    @GetMapping("/department")
+    public ResponseEntity<List<Department>> fetchAllDepartment(){
+        return departmentService.getAll();
+    }
+
     @PostMapping("leave_types")
     public ResponseEntity<LeaveType> createLeaveType(@RequestBody LeaveTypeDto leaveTypeDto){
         return departmentService.createLeaveType(leaveTypeDto);
@@ -48,7 +53,12 @@ public class AdminController {
     }
 
     @PostMapping("/locations")
-    public ResponseEntity<Location> createLocation(LocationDto loactionDto){
+    public ResponseEntity<Location> createLocation(@RequestBody LocationDto loactionDto){
         return employeeService.createLocation(loactionDto);
+    }
+
+    @GetMapping("/locations")
+    public ResponseEntity<List<Location>> fetchAllLocation(){
+        return employeeService.findAllLocation();
     }
 }

@@ -24,4 +24,6 @@ public interface EmployeeService {
     ResponseEntity<List<DepartmentOption>> getDepartmentOption();
 
     ResponseEntity<List<LeaveTypeOption>> getLeaveTypeOption();
+    ResponseEntity<List<Location>> findAllLocation();
+    ResponseEntity<List<EmployeeData>> getEmpData();
 }

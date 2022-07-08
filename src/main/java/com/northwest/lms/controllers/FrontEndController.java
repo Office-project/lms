@@ -1,9 +1,6 @@
 package com.northwest.lms.controllers;
 
-import com.northwest.lms.dtos.DepartmentOption;
-import com.northwest.lms.dtos.LeaveTypeOption;
-import com.northwest.lms.dtos.LocationOption;
-import com.northwest.lms.dtos.UserOption;
+import com.northwest.lms.dtos.*;
 import com.northwest.lms.services.EmployeeService;
 import com.northwest.lms.services.TakeLeaveService;
 import lombok.AllArgsConstructor;
@@ -40,5 +37,10 @@ public class FrontEndController {
     @GetMapping("/notices")
     public ResponseEntity<?> getAllNotices(){
         return leaveService.getNotices();
+    }
+
+    @GetMapping ("/emp-data")
+    public ResponseEntity<List<EmployeeData>> getEmployeeData(){
+        return employeeService.getEmpData();
     }
 }

@@ -20,4 +20,5 @@ public interface DepartmentService {
     ResponseEntity<LeaveType> createLeaveType (LeaveTypeDto leaveTypeDto);
     ResponseEntity<List<LeaveType>> fetchAllLeaveTypes();
 
+    ResponseEntity<List<Department>> getAll();
 }

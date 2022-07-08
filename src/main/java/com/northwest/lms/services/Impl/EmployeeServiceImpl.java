@@ -115,7 +115,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Override
     public ResponseEntity<Location> createLocation(LocationDto loactionDto) {
         Location location = Location.builder()
-                .state(loactionDto.getState()).office(loactionDto.getOffice())
+                .state(loactionDto.getState())
         .build();
         return new ResponseEntity<>(locationRepository.save(location),HttpStatus.CREATED);
     }
@@ -135,7 +135,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     private LocationOption mapToLocationOption(Location location){
         return LocationOption.builder()
                 .id(location.getId())
-                .name(location.getState()+" "+location.getOffice())
+                .name(location.getState())
                 .build();
     }
 
@@ -150,6 +150,39 @@ public class EmployeeServiceImpl implements EmployeeService {
         UserDetails loggedInUser = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         Employee emp = employeeRepository.findEmployeeByEmail(loggedInUser.getUsername()).get();
         return ResponseEntity.ok(emp.getLeavesApplicable().stream().map(this::mapToLeaveOption).collect(Collectors.toList()));
+    }
+
+    @Override
+    public ResponseEntity<List<Location>> findAllLocation() {
+        return ResponseEntity.ok(locationRepository.findAll());
+    }
+
+    @Override
+    public ResponseEntity<List<EmployeeData>> getEmpData() {
+        return ResponseEntity.ok(employeeRepository.findAll().stream().map(this::mapToEmpData).collect(Collectors.toList()));
+    }
+
+    private EmployeeData mapToEmpData(Employee employee) {
+        return EmployeeData.builder()
+                .id(employee.getEmpId())
+                .firstName(employee.getFirstName())
+                .department(getDepartment(employee.getDepartment()))
+                .email(employee.getEmail())
+                .gender(employee.getGender().name())
+                .location(getLocation(employee.getLocation()))
+                .joinDate(employee.getJoinDate())
+                .lastName(employee.getLastName())
+                .build();
+    }
+
+    private String getLocation(Location location) {
+        if(location == null) return null;
+        return location.getState();
+    }
+
+    private String getDepartment(Department department) {
+        if(department == null) return null;
+        return department.getDepartmentName();
     }
 
     private LeaveTypeOption mapToLeaveOption(LeaveType leaveType) {
