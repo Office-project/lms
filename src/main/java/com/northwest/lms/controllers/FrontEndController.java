@@ -18,7 +18,11 @@ public class FrontEndController {
 
     @GetMapping("/user_option")
     public ResponseEntity<List<UserOption>> getUserOption(){
-       return employeeService.getUserOption();
+        return employeeService.getUserOption();
+    }
+    @GetMapping("/user_options_dept")
+    public ResponseEntity<List<UserOption>> getUserOptions(){
+        return employeeService.getUserOptions();
     }
 
     @GetMapping("/location_option")
