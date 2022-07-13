@@ -38,11 +38,6 @@ public class FrontEndController {
         return employeeService.getDepartmentOption();
     }
 
-    @GetMapping("/notices")
-    public ResponseEntity<?> getAllNotices(){
-        return leaveService.getNotices();
-    }
-
     @GetMapping ("/emp-data")
     public ResponseEntity<List<EmployeeData>> getEmployeeData(){
         return employeeService.getEmpData();

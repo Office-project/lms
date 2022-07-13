@@ -1,4 +1,2 @@
-package com.northwest.lms.dtos;
-
-public class Notice {
+package com.northwest.lms.dtos;public class Notice {
 }

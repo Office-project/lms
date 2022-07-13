@@ -66,4 +66,8 @@ public class LeaveController {
     public ResponseEntity<String> adminResponse(@RequestBody ApprovalDto approvalDto){
         return leaveService.adminResponse(approvalDto);
     }
+    @GetMapping("/custom_notification")
+    public ResponseEntity<List<Notice>> getMyNotifications(){
+        return leaveService.getNotification();
+    }
 }
