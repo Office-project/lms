@@ -28,6 +28,10 @@ public class TakeLeave {
     @ManyToOne
     @JoinColumn(name = "leave_type_leave_id")
     private LeaveType leaveType;
+    @ManyToOne
+    @JoinColumn(name = "supervisor_emp_id")
+    private Employee supervisor;
+    private Boolean supervisorApproval = null;
     private LocalDate startDate;
     private LocalDate endDate;
     @ManyToOne
@@ -40,6 +44,8 @@ public class TakeLeave {
     private String reasonForCancellation;
     private String leaveDocument;
     private Boolean adminApproval = null;
+    private Boolean decision = null;
+    private String file;
 
     @CreationTimestamp
     private LocalDate createdDate;

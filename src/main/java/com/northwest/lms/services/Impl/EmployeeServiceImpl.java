@@ -38,9 +38,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Override
     public ResponseEntity<Employee> createEmployee(EmployeeDto employeeDto) {
         Department dept = getDept(employeeDto.getDepartmentID());
-        //List<LeaveType> myLeaves = getLeaves(employeeDto.getLeavesApplicable());
-        //Location location = locationRepository.findById(employeeDto.getLocationId()).orElse(null);
-
+        Employee personalSupervisor = employeeRepository.findById(employeeDto.getPersonalSupervisorId()).orElse(null);
         Employee emp = Employee.builder()
                 .gender(employeeDto.getGender())
                 .email(employeeDto.getEmail())
@@ -50,6 +48,7 @@ public class EmployeeServiceImpl implements EmployeeService {
                 .role(employeeDto.getRole())
                 .joinDate(employeeDto.getJoinDate())
                 .department(dept)
+                .personalSupervisor(personalSupervisor)
                 .location(locationRepository.findById(employeeDto.getLocationId()).orElse(null))
                 .leavesApplicable(getLeaves(getLeavesId((employeeDto.getGender().name()))))
                 .build();
@@ -160,6 +159,16 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Override
     public ResponseEntity<List<EmployeeData>> getEmpData() {
         return ResponseEntity.ok(employeeRepository.findAll().stream().map(this::mapToEmpData).collect(Collectors.toList()));
+    }
+
+    @Override
+    public ResponseEntity<List<UserOption>> getUserOptions() {
+        UserDetails loggedInUser = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Employee emp = employeeRepository.findEmployeeByEmail(loggedInUser.getUsername()).get();
+        Department dep = emp.getDepartment();
+        if(dep == null) return getUserOption();
+        List<Employee> empList = employeeRepository.findEmployeesByDepartment(dep);
+        return ResponseEntity.ok(mapToUserOption(empList));
     }
 
     private EmployeeData mapToEmpData(Employee employee) {

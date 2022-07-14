@@ -30,6 +30,9 @@ public class Employee {
     @ManyToOne
     @JoinColumn(name = "department_dept_id")
     private Department department;
+    @ManyToOne
+    @JoinColumn(name = "personal_supervisor_emp_id")
+    private Employee personalSupervisor;
     private LocalDate joinDate;
     @Enumerated(EnumType.STRING)
     private Role role;

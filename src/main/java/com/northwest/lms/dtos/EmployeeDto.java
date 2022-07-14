@@ -2,15 +2,10 @@ package com.northwest.lms.dtos;
 
 import com.northwest.lms.enums.Gender;
 import com.northwest.lms.enums.Role;
-import com.northwest.lms.models.Department;
-import com.northwest.lms.models.LeaveType;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
-
-import javax.persistence.*;
 import java.time.LocalDate;
-import java.util.List;
 
 @Getter
 @Setter
@@ -22,6 +17,7 @@ public class EmployeeDto {
     private Gender gender;
     private Long departmentID;
     private Long locationId;
+    private Long personalSupervisorId;
     private LocalDate joinDate;
     private Role role;
 }
