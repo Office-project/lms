@@ -18,7 +18,7 @@ public class NotificationController {
         return leaveService.adminResponse(id);
     }
     @DeleteMapping("/Admin/{id}")
-    public ResponseEntity<String> acceptNotificationAdmin(@PathVariable long id, @RequestBody CancelDto cdto){
+    public ResponseEntity<String> acceptNotificationAdminDel(@PathVariable long id, @RequestBody CancelDto cdto){
         return leaveService.adminResponse(id,cdto);
     }
     @PostMapping("/HeadOfDepartment/{id}")
@@ -26,7 +26,7 @@ public class NotificationController {
         return leaveService.hodResponse(id);
     }
     @DeleteMapping("/HeadOfDepartment/{id}")
-    public ResponseEntity<String> acceptNotificationHod(@PathVariable long id, @RequestBody CancelDto cdto){
+    public ResponseEntity<String> acceptNotificationHodDel(@PathVariable long id, @RequestBody CancelDto cdto){
         return leaveService.hodResponse(id,cdto);
     }
     @PostMapping("/Supervisor/{id}")
@@ -34,7 +34,7 @@ public class NotificationController {
         return leaveService.supervisor(id);
     }
     @DeleteMapping("/Supervisor/{id}")
-    public ResponseEntity<String> acceptNotificationSuper(@PathVariable long id, @RequestBody CancelDto cdto){
+    public ResponseEntity<String> acceptNotificationSuperDel(@PathVariable long id, @RequestBody CancelDto cdto){
         return leaveService.supervisor(id,cdto);
     }
     @PostMapping("/ReliefOfficer/{id}")
@@ -42,7 +42,15 @@ public class NotificationController {
         return leaveService.reliefResponse(id);
     }
     @DeleteMapping("/ReliefOfficer/{id}")
-    public ResponseEntity<String> acceptNotification(@PathVariable long id, @RequestBody CancelDto cdto){
+    public ResponseEntity<String> acceptNotificationDel(@PathVariable long id, @RequestBody CancelDto cdto){
+        System.out.println("I am here");
+        System.out.println("I am here");
+        System.out.println("I am here");
+        System.out.println("I am here");
+        System.out.println("I am here");
+        System.out.println("I am here");
+        System.out.println("I am here");
+        System.out.println("I am here");
         return leaveService.reliefResponse(id,cdto);
     }
 
