@@ -6,28 +6,27 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
-import java.util.Map;
 
 public interface TakeLeaveService {
     ResponseEntity<Long> takeLeave(TakeLeaveDto takeLeaveDto);
+    ResponseEntity<String> supervisor(long id);
+    ResponseEntity<String> supervisor(long id, CancelDto cdto);
 
-    ResponseEntity<List<LeaveDto>> getReliefPendingApproval();
+    ResponseEntity<String> reliefResponse(long id);
+    ResponseEntity<String> reliefResponse(long id, CancelDto cdto);
 
-    ResponseEntity<List<LeaveDto>> getHodPendingApproval();
+    ResponseEntity<String> hodResponse(long id);
+    ResponseEntity<String> hodResponse(long id, CancelDto cdto);
 
-    ResponseEntity<List<LeaveDto>> getAdminPendingApproval();
-
-    ResponseEntity<String> reliefResponse(ApprovalDto approvalDto);
-
-    ResponseEntity<String> hodResponse(ApprovalDto approvalDto);
-
-    ResponseEntity<String> adminResponse(ApprovalDto approvalDto);
+    ResponseEntity<String> adminResponse(long id);
+    ResponseEntity<String> adminResponse(long id, CancelDto cdto);
 
     ResponseEntity<List<MyLeave>> getCustomLeave();
 
     ResponseEntity<List<History>> getLeaveHistory();
 
     ResponseEntity<LeaveDto> addFile(Long id, MultipartFile file);
+    ResponseEntity<List<Notice>> getNotification();
 
-    ResponseEntity<Map<String, Notice>> getNotices();
+
 }
