@@ -17,7 +17,6 @@ public class DownloadController {
     @GetMapping("/download/{fileName:.+}")
     public void getLogFile(HttpServletResponse response, @PathVariable("fileName") String fileName) throws Exception {
         try {
-            String fileNameer = fileName;
             String filePathToBeServed = "C:\\lms\\";
             File fileToDownload = new File(filePathToBeServed + fileName);
             InputStream inputStream = new FileInputStream(fileToDownload);
