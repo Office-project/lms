@@ -52,11 +52,11 @@ public class TakeLeaveServiceImpl implements TakeLeaveService {
         LeaveType type = leaveTypeRepo.findById(takeLeaveDto.getLeaveTypeId()).get();
         LocalDate endDate = getEndDate(takeLeaveDto.getStartDate(),type.getDaysAllowed());
 
-        if(!criteriaOne(emp.getJoinDate())) throw new NotEligibleException("Not Eligible");
-        personalCriteria(emp,type);
+        confirmEligibility(emp,type);
+
         if(!criteriaTwo(emp.getDepartment(),takeLeaveDto.getStartDate(),endDate)) throw new NotEligibleException("Not Eligible");
         TakeLeave takeLeave = TakeLeave.builder()
-                        .employee(emp)
+                .employee(emp)
                 .reliefOfficer(reliefOfficer)
                 .department(emp.getDepartment())
                 .startDate(takeLeaveDto.getStartDate())
@@ -71,6 +71,11 @@ public class TakeLeaveServiceImpl implements TakeLeaveService {
 
 
         return new ResponseEntity<>(takeLeaveRepo.save(takeLeave).getLeaveId(), HttpStatus.CREATED);
+    }
+
+    private void confirmEligibility(Employee emp, LeaveType type){
+        if(!criteriaOne(emp.getJoinDate())) throw new NotEligibleException("Not Eligible");
+        if(!personalCriteria(emp,type))throw new NotEligibleException("Not Eligible");
     }
 
     @Override
@@ -168,14 +173,19 @@ public class TakeLeaveServiceImpl implements TakeLeaveService {
         return end.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
     }
 
-    private void personalCriteria(Employee emp, LeaveType type) {
+    private boolean personalCriteria(Employee emp, LeaveType type) {
         List<TakeLeave> leaves = takeLeaveRepo.findTakeLeavesByEmployeeAndCreatedDateBetween(emp,yearStart,yearEnd);
 
         for(TakeLeave e: leaves){
             if(e.getLeaveType().equals(type) && e.getDecision() == null){
-                throw new NotEligibleException("You have a pending leave");
+                return false;
+            }
+            if(e.getLeaveType().equals(type) && e.getDecision() == Boolean.TRUE){
+                return false;
             }
         }
+
+        return true;
     }
 
 
@@ -241,24 +251,28 @@ public class TakeLeaveServiceImpl implements TakeLeaveService {
         List<LeaveType> lt = emp.getLeavesApplicable();
         List<MyLeave> myCustomLeaves = new ArrayList<>();
         for (LeaveType leaveType : lt) {
+            boolean status = true;
+            try{
+                confirmEligibility(emp,leaveType);
+            }catch (NotEligibleException e){
+                status = false;
+            }
+
             MyLeave custom = new MyLeave();
             custom.setId(leaveType.getLeaveId());
             custom.setName(leaveType.getLeaveName());
             custom.setDuration(leaveType.getDaysAllowed());
-            custom.setEligible(criteriaOne(emp.getJoinDate()));
+            custom.setEligible(status);
             myCustomLeaves.add(custom);
         }
-
         return ResponseEntity.ok(myCustomLeaves);
     }
-
     @Override
     public ResponseEntity<List<History>> getLeaveHistory() {
         UserDetails loggedInUser = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         Employee emp = empRepo.findEmployeeByEmail(loggedInUser.getUsername()).get();
         List<TakeLeave> myLeaves = takeLeaveRepo.findTakeLeavesByEmployee(emp);
         return ResponseEntity.ok(myLeaves.stream().map(this::mapToHistory).collect(Collectors.toList()));
-
     }
 
     @Override
@@ -266,14 +280,6 @@ public class TakeLeaveServiceImpl implements TakeLeaveService {
         String document = getFile(file);
         String[] arr = document.split("\\\\");
         String fileName = arr[arr.length - 1];
-        System.out.println(fileName);
-
-
-        System.out.println("for filepath "+document);
-        System.out.println("for file name "+fileName);
-
-
-
         TakeLeave leave = takeLeaveRepo.findById(id).orElse(null);
         assert leave != null;
         leave.setLeaveDocument(document);
@@ -309,9 +315,23 @@ public class TakeLeaveServiceImpl implements TakeLeaveService {
     }
 
     private void toNotice(List<Notice> noticeList, List<TakeLeave> leaves, String position){
+
         for(TakeLeave e: leaves){
+            String supervisorName = null;
+            if(e.getSupervisor() != null){
+                supervisorName = e.getSupervisor().getFirstName()+" "+e.getSupervisor().getLastName();
+            }
             Notice notice = Notice.builder()
                     .id(e.getLeaveId())
+                    .name(e.getEmployee().getFirstName()+" "+e.getEmployee().getLastName())
+                    .relief(e.getReliefOfficer().getFirstName()+" "+e.getReliefOfficer().getLastName())
+                    .reliefApproval(e.getReliefOfficerApproval())
+                    .supervisor(supervisorName)
+                    .supervisorApproval(e.getSupervisorApproval())
+                    .hod("HOD of "+e.getEmployee().getDepartment().getDepartmentName())
+                    .hodApproval(e.getHodApproval())
+                    .adminApproval(e.getAdminApproval())
+                    .decision(e.getDecision())
                     .document(e.getFile())
                     .reason(e.getReasonForRequest())
                     .position(position)

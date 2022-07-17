@@ -17,5 +17,14 @@ public class Notice {
     private String position;
     private LocalDate startDate;
     private LocalDate resumptionDate;
+    private String name;
+    private String relief;
+    private Boolean reliefApproval;
+    private String supervisor;
+    private Boolean supervisorApproval;
+    private String hod;
+    private Boolean hodApproval;
+    private Boolean adminApproval;
+    private Boolean decision;
 
 }
