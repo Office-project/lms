@@ -52,6 +52,12 @@ public class AdminController {
         return departmentService.assignHOD(hodDto);
     }
 
+    @PostMapping("/hod/update")
+    public ResponseEntity<HeadOfDepartments> updateHOD(@RequestBody UpdateHod updateHod){
+        return departmentService.updateHod(updateHod);
+    }
+
+
     @PostMapping("/locations")
     public ResponseEntity<Location> createLocation(@RequestBody LocationDto loactionDto){
         return employeeService.createLocation(loactionDto);
