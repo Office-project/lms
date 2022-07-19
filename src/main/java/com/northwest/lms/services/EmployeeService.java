@@ -3,6 +3,7 @@ package com.northwest.lms.services;
 import com.northwest.lms.dtos.*;
 import com.northwest.lms.models.Employee;
 
+import com.northwest.lms.models.HeadOfDepartments;
 import com.northwest.lms.models.Location;
 import org.springframework.http.ResponseEntity;
 
@@ -28,4 +29,8 @@ public interface EmployeeService {
     ResponseEntity<List<EmployeeData>> getEmpData();
 
     ResponseEntity<List<UserOption>> getUserOptions();
+
+    ResponseEntity<List<HODFrontEnd>> fetchAllHod();
+
+    ResponseEntity<List<UserOption>> getUserOptionDeptId(long id);
 }

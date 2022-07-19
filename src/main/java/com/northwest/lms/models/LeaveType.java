@@ -19,5 +19,5 @@ public class LeaveType {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long leaveId;
     private String leaveName;
-    private int daysAllowed;
+    private Integer daysAllowed;
 }

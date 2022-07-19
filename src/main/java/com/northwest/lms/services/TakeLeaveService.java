@@ -27,6 +27,5 @@ public interface TakeLeaveService {
 
     ResponseEntity<LeaveDto> addFile(Long id, MultipartFile file);
     ResponseEntity<List<Notice>> getNotification();
-
-
+    ResponseEntity<List<History>> getAllLeaveHistory();
 }

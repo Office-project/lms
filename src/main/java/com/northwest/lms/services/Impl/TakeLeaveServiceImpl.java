@@ -68,8 +68,6 @@ public class TakeLeaveServiceImpl implements TakeLeaveService {
 
         if(takeLeave.getDays() < type.getDaysAllowed()) throw new NotEligibleException("Leave cannot be split");
         if(takeLeave.getDays() > type.getDaysAllowed()) throw new NotEligibleException("Days is above the policy days permitted");
-
-
         return new ResponseEntity<>(takeLeaveRepo.save(takeLeave).getLeaveId(), HttpStatus.CREATED);
     }
 
@@ -184,7 +182,6 @@ public class TakeLeaveServiceImpl implements TakeLeaveService {
                 return false;
             }
         }
-
         return true;
     }
 
@@ -314,6 +311,13 @@ public class TakeLeaveServiceImpl implements TakeLeaveService {
         return ResponseEntity.ok(myNotices);
     }
 
+    @Override
+    public ResponseEntity<List<History>> getAllLeaveHistory() {
+        List<TakeLeave> myLeaves = takeLeaveRepo.findAll();
+        return ResponseEntity.ok(myLeaves.stream().map(this::mapToHistory).collect(Collectors.toList()));
+
+    }
+
     private void toNotice(List<Notice> noticeList, List<TakeLeave> leaves, String position){
 
         for(TakeLeave e: leaves){
@@ -342,18 +346,31 @@ public class TakeLeaveServiceImpl implements TakeLeaveService {
         }
     }
 
-    private History mapToHistory(TakeLeave leave) {
+    private History mapToHistory(TakeLeave e) {
+        String supervisorName = null;
+        if(e.getSupervisor() != null){
+            supervisorName = e.getSupervisor().getFirstName()+" "+e.getSupervisor().getLastName();
+        }
         return   History.builder()
-                .type(leave.getLeaveType().getLeaveName())
-                .duration(leave.getDays())
-                .start(leave.getStartDate())
-                .end(leave.getEndDate())
-                .reasonForRequest(leave.getReasonForRequest())
-                .reasonForDecline(leave.getReasonForDecline())
-                .reasonForCancellation(leave.getReasonForCancellation())
-                .reliefOfficer(leave.getReliefOfficer().getFirstName()+" "+leave.getReliefOfficer().getLastName())
-                .appliedOn(leave.getCreatedDate())
-                .download(leave.getLeaveDocument())
+                .type(e.getLeaveType().getLeaveName())
+                .duration(e.getDays())
+                .start(e.getStartDate())
+                .end(e.getEndDate())
+                .reasonForRequest(e.getReasonForRequest())
+                .reasonForDecline(e.getReasonForDecline())
+                .reasonForCancellation(e.getReasonForCancellation())
+                .reliefOfficer(e.getReliefOfficer().getFirstName()+" "+ e.getReliefOfficer().getLastName())
+                .appliedOn(e.getCreatedDate())
+                .download(e.getFile())
+                .name(e.getEmployee().getFirstName()+" "+e.getEmployee().getLastName())
+                .relief(e.getReliefOfficer().getFirstName()+" "+e.getReliefOfficer().getLastName())
+                .reliefApproval(e.getReliefOfficerApproval())
+                .supervisor(supervisorName)
+                .supervisorApproval(e.getSupervisorApproval())
+                .hod("HOD of "+e.getEmployee().getDepartment().getDepartmentName())
+                .hodApproval(e.getHodApproval())
+                .adminApproval(e.getAdminApproval())
+                .decision(e.getDecision())
                 .build();
     }
 

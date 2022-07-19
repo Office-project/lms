@@ -4,14 +4,8 @@ import com.northwest.lms.config.mail.LmsSender;
 import com.northwest.lms.dtos.*;
 import com.northwest.lms.enums.Role;
 import com.northwest.lms.exceptions.PasswordIncorrectException;
-import com.northwest.lms.models.Department;
-import com.northwest.lms.models.Employee;
-import com.northwest.lms.models.LeaveType;
-import com.northwest.lms.models.Location;
-import com.northwest.lms.repositories.DepartmentRepository;
-import com.northwest.lms.repositories.EmployeeRepository;
-import com.northwest.lms.repositories.LeaveTypeRepository;
-import com.northwest.lms.repositories.LocationRepository;
+import com.northwest.lms.models.*;
+import com.northwest.lms.repositories.*;
 import com.northwest.lms.services.EmployeeService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -30,6 +24,7 @@ import java.util.stream.Collectors;
 public class EmployeeServiceImpl implements EmployeeService {
 
     private EmployeeRepository employeeRepository;
+    private HeadOfDepartmentRepository hodRepo;
     private DepartmentRepository deptRepository;
     private LeaveTypeRepository leaveTypeRepository;
     private LmsSender sender;
@@ -171,6 +166,31 @@ public class EmployeeServiceImpl implements EmployeeService {
         return ResponseEntity.ok(mapToUserOption(empList));
     }
 
+    @Override
+    public ResponseEntity<List<HODFrontEnd>> fetchAllHod() {
+        return ResponseEntity.ok(hodRepo.findAll().stream().map(this::toHodFrontEnd).collect(Collectors.toList()));
+    }
+
+    @Override
+    public ResponseEntity<List<UserOption>> getUserOptionDeptId(long id) {
+        Department dep = deptRepository.findById(id).get();
+        List<Employee> empList = employeeRepository.findEmployeesByDepartment(dep);
+        return ResponseEntity.ok(mapToUserOption(empList));
+    }
+
+    private HODFrontEnd toHodFrontEnd(HeadOfDepartments hod){
+        String emp = null;
+        if(hod.getEmployee() != null){
+            emp = hod.getEmployee().getFirstName()+" "+hod.getEmployee().getLastName();
+        }
+        return HODFrontEnd.builder()
+                .department(hod.getDepartment().getDepartmentName())
+                .employee(emp)
+                .id(hod.getHodId())
+                .deptId(hod.getDepartment().getDeptId())
+                .build();
+    }
+
     private EmployeeData mapToEmpData(Employee employee) {
         return EmployeeData.builder()
                 .id(employee.getEmpId())
@@ -227,7 +247,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     private List<Integer> getLeavesId(String gender){
-        if(gender.equals("MALE")) return List.of(1,2);
-        else return List.of(1,2,3);
+        if(gender.equals("MALE")) return List.of(1,2,4);
+        else return List.of(1,2,3,4);
     }
 }

@@ -16,7 +16,7 @@ public class JwtTokenProvider {
 
     private String jwtSecret = "secret";
 
-    private final int jwtExpirationInMin = 60 ;
+    private final int jwtExpirationInMin = 30;
 
     public String generateToken(Authentication authentication){
         String username = authentication.getName();

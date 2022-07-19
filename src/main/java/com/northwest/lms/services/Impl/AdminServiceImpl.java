@@ -3,6 +3,7 @@ package com.northwest.lms.services.Impl;
 import com.northwest.lms.dtos.DepartmentDto;
 import com.northwest.lms.dtos.HeadOfDepartmentsDto;
 import com.northwest.lms.dtos.LeaveTypeDto;
+import com.northwest.lms.dtos.UpdateHod;
 import com.northwest.lms.models.Department;
 import com.northwest.lms.models.Employee;
 import com.northwest.lms.models.HeadOfDepartments;
@@ -56,8 +57,6 @@ public class AdminServiceImpl implements DepartmentService {
 
     @Override
     public ResponseEntity<HeadOfDepartments> updateHOD(HeadOfDepartmentsDto headOfDepartmentsDto,Long hodId) {
-
-
         return null;
     }
 
@@ -78,5 +77,15 @@ public class AdminServiceImpl implements DepartmentService {
     @Override
     public ResponseEntity<List<Department>> getAll() {
         return ResponseEntity.ok(departmentRepo.findAll());
+    }
+
+    @Override
+    public ResponseEntity<HeadOfDepartments> updateHod(UpdateHod updateHod) {
+
+        HeadOfDepartments hod = hodRepo.findById(updateHod.getHodId()).get();
+        Employee emp = employeeRepo.findById(updateHod.getEmpId()).get();
+
+        hod.setEmployee(emp);
+        return ResponseEntity.ok(hodRepo.save(hod));
     }
 }

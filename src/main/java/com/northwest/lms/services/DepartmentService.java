@@ -3,6 +3,7 @@ package com.northwest.lms.services;
 import com.northwest.lms.dtos.DepartmentDto;
 import com.northwest.lms.dtos.HeadOfDepartmentsDto;
 import com.northwest.lms.dtos.LeaveTypeDto;
+import com.northwest.lms.dtos.UpdateHod;
 import com.northwest.lms.models.Department;
 import com.northwest.lms.models.HeadOfDepartments;
 import com.northwest.lms.models.LeaveType;
@@ -21,4 +22,6 @@ public interface DepartmentService {
     ResponseEntity<List<LeaveType>> fetchAllLeaveTypes();
 
     ResponseEntity<List<Department>> getAll();
+
+    ResponseEntity<HeadOfDepartments> updateHod(UpdateHod updateHod);
 }
