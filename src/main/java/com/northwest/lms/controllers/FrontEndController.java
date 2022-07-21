@@ -3,6 +3,7 @@ package com.northwest.lms.controllers;
 import com.northwest.lms.dtos.*;
 import com.northwest.lms.models.HeadOfDepartments;
 import com.northwest.lms.services.EmployeeService;
+import com.northwest.lms.services.LoginService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -17,6 +18,11 @@ import java.util.List;
 @CrossOrigin("*")
 public class FrontEndController {
     private EmployeeService employeeService;
+    private LoginService loginService;
+    @GetMapping("/dashboard")
+    public ResponseEntity<Dashboard> getDashboard(){
+        return loginService.getDashboard();
+    }
     @GetMapping("/user_option")
     public ResponseEntity<List<UserOption>> getUserOption(){
         return employeeService.getUserOption();

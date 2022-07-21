@@ -14,9 +14,12 @@ import springfox.documentation.spi.service.contexts.SecurityContext;
 import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+
+import static java.util.Arrays.asList;
 
 @Configuration
 @EnableSwagger2
@@ -36,18 +39,18 @@ public class SwaggerConfig {
                 .apis(RequestHandlerSelectors.basePackage("com.northwest.lms"))
                 .build()
                 .apiInfo(apiDetails())
-                .securitySchemes(Arrays.asList(apikey()))
-                .securityContexts(Arrays.asList(securityContext()));
+                .securitySchemes(asList(apikey()))
+                .securityContexts(asList(securityContext()));
     }
 
     private ApiInfo apiDetails(){
         return new ApiInfo(
                 "LMS Api",
                 "LMS API",
-                "2 .0",
+                "2.0",
                 "this version is in-house",
                 new springfox.documentation.service.Contact("NorthWest Group",
-                        "http://http://51.77.99.34/8080/GRMS",
+                        "http://http://51.77.99.34/8080/lms",
                         "email@northwestpetroleum-ng.com"),
                 "Api License",
                 "http://northwest.io",
@@ -66,6 +69,6 @@ public class SwaggerConfig {
         AuthorizationScope[] authorizationScopes = new AuthorizationScope[1];
         authorizationScopes[0] = authorizationScope;
 
-        return List.of(new SecurityReference("JWT", authorizationScopes));
+        return new ArrayList(asList(new SecurityReference("JWT", authorizationScopes)));
     }
 }

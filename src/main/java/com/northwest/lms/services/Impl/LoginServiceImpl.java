@@ -1,6 +1,7 @@
 package com.northwest.lms.services.Impl;
 
 import com.northwest.lms.config.security.JwtTokenProvider;
+import com.northwest.lms.dtos.Dashboard;
 import com.northwest.lms.dtos.JwtAuthResponse;
 import com.northwest.lms.dtos.LoginDto;
 import com.northwest.lms.models.Department;
@@ -20,6 +21,7 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
@@ -79,6 +81,27 @@ public class LoginServiceImpl implements LoginService {
                 .supervisor(getSupervisor(employee))
                 .build();
         return ResponseEntity.ok(login);
+    }
+    @Override
+    public ResponseEntity<Dashboard> getDashboard() {
+        UserDetails loggedInUser = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Employee employee = employeeRepository.findEmployeeByEmail(loggedInUser.getUsername()).get();
+        String initial = employee.getFirstName().toUpperCase().charAt(0)+"."+employee.getLastName().toUpperCase().charAt(0);
+
+        Dashboard dashboard = Dashboard.builder()
+                .id(employee.getEmpId())
+                .firstName(employee.getFirstName())
+                .lastName(employee.getLastName())
+                .email(employee.getEmail())
+                .role(employee.getRole().toString())
+                .department(employee.getDepartment().getDepartmentName())
+                .initail(initial)
+                .location(employee.getLocation().getState())
+                .joinDate(employee.getJoinDate().toString())
+                .supervisor(getSupervisor(employee))
+                .build();
+
+        return ResponseEntity.ok(dashboard);
     }
     @Override
     public ResponseEntity<?> logout(String token) {

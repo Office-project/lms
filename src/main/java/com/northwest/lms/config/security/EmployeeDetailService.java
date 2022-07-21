@@ -5,11 +5,14 @@ import com.northwest.lms.models.Employee;
 import com.northwest.lms.repositories.EmployeeRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -21,7 +24,7 @@ public class EmployeeDetailService implements UserDetailsService {
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         Employee user = employeeRepository.findEmployeeByEmail(email)
                 .orElseThrow(() -> new UsernameNotFoundException("No Staff with " + email+" found"));
-        return new org.springframework.security.core.userdetails.User(user.getEmail(),user.getPassword(),List.of(new SimpleGrantedAuthority(user.getRole().name())));
+        return new User(user.getEmail(),user.getPassword(),new ArrayList(Collections.singleton(new SimpleGrantedAuthority(user.getRole().name()))));
     }
 
 }

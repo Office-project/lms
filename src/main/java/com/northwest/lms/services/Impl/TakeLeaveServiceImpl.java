@@ -153,7 +153,7 @@ public class TakeLeaveServiceImpl implements TakeLeaveService {
         Date start = Date.from(Instant.from(startDate.atStartOfDay(ZoneId.systemDefault())));
         Calendar cal1 = Calendar.getInstance();
         cal1.setTime(start);
-        int days = 0;
+        int days = 1;
         if(Calendar.MONDAY != cal1.get(Calendar.DAY_OF_WEEK)) throw new RuntimeException("not valid");
 
         if(duration < 30){
@@ -195,7 +195,7 @@ public class TakeLeaveServiceImpl implements TakeLeaveService {
         cal1.setTime(start);
         cal2.setTime(end);
 
-        int numberOfDays = 0;
+        int numberOfDays = 1;
         if(days < 30) {
             while (cal1.before(cal2)) {
                 if ((Calendar.SATURDAY != cal1.get(Calendar.DAY_OF_WEEK))

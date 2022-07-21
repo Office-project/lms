@@ -31,7 +31,11 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(errorDetail,HttpStatus.IM_USED);
     }
 
-
+    @ExceptionHandler(HODException.class)
+    public ResponseEntity<ApiErrorDetail> handleHODException(HODException e, WebRequest request){
+        ApiErrorDetail errorDetail = new ApiErrorDetail(e.getMessage(), request.getDescription(true));
+        return new ResponseEntity<>(errorDetail,HttpStatus.IM_USED);
+    }
     @ExceptionHandler(value = {Exception.class})
     public ResponseEntity<Object> handleGeneralException(Exception e, WebRequest request){
        ApiErrorDetail errorDetail = new ApiErrorDetail(e.getMessage(), request.getDescription(true));

@@ -19,6 +19,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static java.util.Arrays.asList;
+
 @Service
 @AllArgsConstructor
 public class EmployeeServiceImpl implements EmployeeService {
@@ -246,8 +248,8 @@ public class EmployeeServiceImpl implements EmployeeService {
         return Role.STAFF;
     }
 
-    private List<Integer> getLeavesId(String gender){
-        if(gender.equals("MALE")) return List.of(1,2,4);
-        else return List.of(1,2,3,4);
+    private ArrayList getLeavesId(String gender){
+        if(gender.equals("MALE")) return new ArrayList(asList(1,2,4));
+        else return new ArrayList(asList(1,2,3,4));
     }
 }

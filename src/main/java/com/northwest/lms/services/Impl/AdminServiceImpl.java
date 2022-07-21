@@ -4,6 +4,7 @@ import com.northwest.lms.dtos.DepartmentDto;
 import com.northwest.lms.dtos.HeadOfDepartmentsDto;
 import com.northwest.lms.dtos.LeaveTypeDto;
 import com.northwest.lms.dtos.UpdateHod;
+import com.northwest.lms.exceptions.HODException;
 import com.northwest.lms.models.Department;
 import com.northwest.lms.models.Employee;
 import com.northwest.lms.models.HeadOfDepartments;
@@ -41,6 +42,10 @@ public class AdminServiceImpl implements DepartmentService {
     public ResponseEntity<HeadOfDepartments> assignHOD(HeadOfDepartmentsDto hodDto) {
         Department department = departmentRepo.findById(hodDto.getDepartmentId()).get();
         Employee emp = employeeRepo.findById(hodDto.getEmployeeId()).get();
+
+        HeadOfDepartments headOfDep = hodRepo.findHeadOfDepartmentsByDepartment(department);
+
+        if(headOfDep != null) throw new HODException("Reassign HOD instead");
 
         HeadOfDepartments hod = HeadOfDepartments.builder()
                 .department(department)
