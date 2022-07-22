@@ -15,11 +15,16 @@ public interface TakeLeaveRepository extends JpaRepository<TakeLeave, Long> {
     List<TakeLeave> findTakeLeavesByDepartmentAndCreatedDateBetween(Department department, LocalDate from, LocalDate to);
     List<TakeLeave> findTakeLeavesByEmployeeAndCreatedDateBetween(Employee emp, LocalDate from, LocalDate to);
     List<TakeLeave> findTakeLeavesByEmployee(Employee emp);
-    List<TakeLeave> findTakeLeavesBySupervisorAndReliefOfficerApproval(Employee emp,Boolean bool);
-    List<TakeLeave> findTakeLeavesByReliefOfficerAndReliefOfficerApproval(Employee reliefOfficer, Boolean bool);
-    //List<TakeLeave> findTakeLeavesByDepartmentAndHAndHodApproval(Department department, Boolean bool);
-    List<TakeLeave> findTakeLeavesByReliefOfficerApprovalAndHodApproval(Boolean bool, Boolean bool2);
-    List<TakeLeave> findTakeLeavesByHodApprovalAndAdminApproval(Boolean bool,Boolean bool2);
+//    List<TakeLeave> findTakeLeavesBySupervisorAndReliefOfficerApproval(Employee emp,Boolean bool);
+//    List<TakeLeave> findTakeLeavesByReliefOfficerAndReliefOfficerApproval(Employee reliefOfficer, Boolean bool);
+//    List<TakeLeave> findTakeLeavesByReliefOfficerApprovalAndHodApproval(Boolean bool, Boolean bool2);
+//    List<TakeLeave> findTakeLeavesByHodApprovalAndAdminApproval(Boolean bool,Boolean bool2);
+
+    List<TakeLeave> findTakeLeavesBySupervisorAndReliefOfficerApprovalAndDecisionAndSupervisorApproval(Employee supervisor, Boolean bool,Boolean bool2,Boolean bool3);
+    List<TakeLeave> findTakeLeavesByReliefOfficerAndReliefOfficerApprovalAndDecision(Employee reliefOfficer,Boolean bool,Boolean bool2);
+    List<TakeLeave> findTakeLeavesByReliefOfficerApprovalAndHodApprovalAndDecision(Boolean bool,Boolean bool2,Boolean bool3);
+    List<TakeLeave> findTakeLeavesByHodApprovalAndAdminApprovalAndDecision(Boolean bool,Boolean bool2,Boolean bool3);
+
 }
 
 //Notice "things that need my approval"

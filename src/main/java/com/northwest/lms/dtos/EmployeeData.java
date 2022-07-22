@@ -17,6 +17,6 @@ public class EmployeeData {
     private String  gender;
     private String department;
     private String location;
-    private LocalDate joinDate;
+    private String joinDate;
     private String  role;
 }

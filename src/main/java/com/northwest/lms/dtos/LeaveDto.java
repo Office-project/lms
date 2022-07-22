@@ -16,13 +16,14 @@ public class LeaveDto {
     private String reliefOfficer;
     private Boolean reliefOfficerApproval = null;
     private String leaveType;
-    private LocalDate startDate;
-    private LocalDate endDate;
+    private String startDate;
+    private String endDate;
     private String department;
     private Boolean hodApproval = null;
     private int days;
     private String reason;
     private String leaveDocument;
     private Boolean adminApproval = null;
-    private LocalDate createdDate;
+    private String createdDate;
+    private String status;
 }

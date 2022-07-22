@@ -12,15 +12,14 @@ import java.time.LocalDate;
 public class History {
     private String type;
     private int duration;
-    private LocalDate start;
-    private LocalDate end;
+    private String start;
+    private String end;
     private String reasonForRequest;
     private String reasonForDecline;
     private String reasonForCancellation;
     private String reliefOfficer;
-    private LocalDate appliedOn;
+    private String appliedOn;
     private String download;
-
 
     private String name;
     private String relief;
@@ -28,7 +27,9 @@ public class History {
     private String supervisor;
     private Boolean supervisorApproval;
     private String hod;
+    private String adminName;
     private Boolean hodApproval;
     private Boolean adminApproval;
     private Boolean decision;
+    private String status;
 }

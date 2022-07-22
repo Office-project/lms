@@ -54,7 +54,8 @@ public class EmployeeServiceImpl implements EmployeeService {
         EmailSenderDto sendEmail = new EmailSenderDto();
         sendEmail.setTo(employeeDto.getEmail());
         sendEmail.setSubject("WELCOME TO LMS PORTAL");
-        sendEmail.setContent("An account have been registered for you on The LMS Platform, you can login using this email and `Northwest123` as password");
+        sendEmail.setContent("An account have been registered for you on The LMS Platform, you can login using this email and `Northwest123` as password.<br>" +
+                "<p>Click on the link to <a href=\"http://51.77.99.34:8080/LMS\" target=\"_blank\">visit</a>. </p>");
 
         employeeRepository.save(emp);
         Thread thread = new Thread(()->{
@@ -201,7 +202,7 @@ public class EmployeeServiceImpl implements EmployeeService {
                 .email(employee.getEmail())
                 .gender(employee.getGender().name())
                 .location(getLocation(employee.getLocation()))
-                .joinDate(employee.getJoinDate())
+                .joinDate(employee.getJoinDate().toString())
                 .lastName(employee.getLastName())
                 .role(employee.getRole().name())
                 .build();

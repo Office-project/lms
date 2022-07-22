@@ -45,6 +45,9 @@ public class TakeLeave {
     private String leaveDocument;
     private Boolean adminApproval = null;
     private Boolean decision = null;
+    private String status = "pending";
+    private String adminName = "Not assigned";
+    private String hod;
     private String file;
 
     @CreationTimestamp
